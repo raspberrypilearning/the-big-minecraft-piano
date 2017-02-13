@@ -71,3 +71,7 @@ The first step in this project is to try and send notes from Python to Sonic Pi.
 	>>> play_note(61)
 	>>> play_note(62)
 	```
+## Building piano keys.
+It may seem a little daunting to try and build a piano in Minecraft, so it's easier to try and break down the problem into much smaller chuncks. This is a process that Computer Scientists call decomposition.
+
+A piano keyboard is made up of repeating groups of 7 white keys and 5 black keys. This is called an octave. 
