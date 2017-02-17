@@ -47,7 +47,7 @@ if __name__ == "__main__":
         block_below = mc.getBlock(new_x, new_y - 1, new_z)
         if block_below == 0: ##Needed because of height difference with black and white keys
             block_below = mc.getBlock(new_x, new_y, new_z)
-        relative_position = player_x - x ## find the position on the piano
+        relative_position = player_x - new_x ## find the position on the piano
         white_notes = [60, 62, 64, 65, 67, 69, 71]
         black_notes = [61, 63, 0,  66, 68, 70]
         if block_below == 44: # if a white note
