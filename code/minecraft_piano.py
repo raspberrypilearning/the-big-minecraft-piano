@@ -23,7 +23,7 @@ def white_key(x, y, z):
 
 def make_octave(x, y, z):
     '''Take an x, y, and z position in minecraft and build an octave of white and black keys'''
-    for i in range(0, 21, 3):
+    for i in range(0, 19, 3):
         white_key(player_x + i, player_y, player_z)
     for i in range(2, 18, 3):
         if i != 8:  ##leave a space as only 5 black keys

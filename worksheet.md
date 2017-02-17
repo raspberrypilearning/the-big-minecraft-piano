@@ -72,6 +72,150 @@ The first step in this project is to try and send notes from Python to Sonic Pi.
 	>>> play_note(62)
 	```
 ## Building piano keys.
-It may seem a little daunting to try and build a piano in Minecraft, so it's easier to try and break down the problem into much smaller chuncks. This is a process that Computer Scientists call decomposition.
+It may seem a little daunting to try and build a piano in Minecraft, so it's easier to try and break down the problem into much smaller chuncks. This is a process that Computer Scientists call *decomposition.*
 
-A piano keyboard is made up of repeating groups of 7 white keys and 5 black keys. This is called an octave. 
+A piano keyboard is made up of repeating groups of 7 white keys and 5 black keys. This is called an octave. Building each of these elements one at a time, will allow you to easily build a keyboard.
+
+To begin with, you need to import the Minecraft Pi module and get the player's current position.
+Add a few more lines of code so that the start of your file looks like this:
+
+```python
+from pythonosc import osc_message_builder
+from pythonosc import udp_client
+from mcpi.minecraft import Minecraft
+from time import sleep
+
+sender = udp_client.SimpleUDPClient('127.0.0.1', 4559)
+mc = Minecraft.create()
+
+player_x, player_y, player_z  = mc.player.getTilePos()
+```
+
+## Planning the keyboard
+It's always a good idea to quickly sketch out what you want to build before you start throwing blocks into the Minecraft world. Here's a quick sketch of an octave of a keyboard, showing the `x` and `z` block positions.
+
+![octave sketch](images/octave.jpg)
+
+## Building black keys
+You can use a function to build your first black key. A function is a block of named code that performs some task. You can call this one *black_key*. The function will need to know where to build the black piano key, so it will need three parameters. These parameters will be the x, y and z position in the Minecraft world, where the key needs to be built.
+
+```python
+def black_key(x, y, z):
+```
+
+The next step is to use the `setBlocks` function, to set a few black minecraft blocks. If you look at the black key on the far left, you can see that it is 2 blocks wide and 9 blocks long. So if the first block is placed at an `x` and `z` coordiante, then you need the one to it's right to be placed at `x + 1` and the ones below it to be placed at `z + 1` up to `z + 8`. All the blocks can be placed at 1 block below the player's position - `y - 1`.
+
+Obsidian seems like a sensible material to build the blocks from. This has a `blockId` of `49`.
+
+```python
+def black_key(x, y, z):
+    mc.setBlocks(x, y - 1, z, x + 1, y - 1, z + 8, 49)
+```
+
+Test your code by running it, and then typing the following into the shell, to *call* your function. Make sure you've moved Steve to a clear bit of space first.
+
+```python
+>>> black_key(player_x, player_y, player_z)
+```
+
+Move Steve around and you should be able to see a black piano key in the Minecraft world.
+
+## Building White keys
+Have a look at the first white key in the sketch. It's three blocks wide and 15 blocks long. This time you need to set blocks from `x` up to `x + 2` and from `z` up to `z + 14`.
+
+You can write a function to do this, using the white tile block, which has a blockId of `44, 7`
+
+```python
+def white_key(x, y, z):
+    mc.setBlocks(x, y - 1, z, x + 2, y - 1, z + 14, 44, 7)
+```
+
+Again, you can run your code and then type the following into the shell, to see the white key being produced.
+
+```python
+>>> white_key(player_x, player_y, player_z)
+```
+
+## Making an octave.
+
+On octave consists of 7 white notes and 5 black notes. If you look at the sketch, you can see that the blocks stretch from `x` to `x + 18`. The `for` loop needs to place a key every 3 block-units on the `x` axis from `0` up to `18`.
+
+You can write a quick `for` loop in a new file or the shell, to learn a little about how they function. This loop will make sure each value is printed with commas seperating the numbers.
+
+```python
+for i in range(19):
+    print(i, end = ',')
+
+>>> 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,
+```
+
+You can see that the first value is `0` and the last is `20`.
+
+If you want to place a block every 3 units, then you need to add a step value to the `range()` function.
+Here the function provides values from `0` to `20` with a step value of `3`.
+
+```python
+for i in range(0, 19, 3):
+    print(i, end = ',')
+	
+>>> 0,3,6,9,12,15,18,
+```
+
+Now you can start making your octave function. placing a white key at every position provided by `i`.
+
+```python
+def make_octave(x, y, z):
+    for i in range(0, 19, 3):
+        white_key(player_x + i, player_y, player_z)
+```
+
+Save and run your code, then type `make_octave(player_x, player_y, player_z)` into the shell. You should see your white keys being placed in yout Minecraft world.
+
+Next is the blakc keys. You can use the same system for placing these. Look at the sketch again. This time the black keys need to be placed starting at `x = 2`. Within the `make_octave` function you can add another `for` loop.
+
+```python
+def make_octave(x, y, z):
+    for i in range(0, 19, 3):
+        white_key(player_x + i, player_y, player_z)
+    for i in range(2, 18, 3):
+		black_key(player_x + i, player_y, player_z)
+```
+
+Save an run your code again, then call the `make_octave` function.
+
+If you look at your octave, it's nearly done. There's just one key too many. A key has been placed at `x = 8`, and you need to make sure that this key is missed out. A little bit of conditional selection will help with this. If the value of `i` is `8` then the `black_key` function should not be called. Another way of putting this is *if i is not equal to 8" then the `black_key` function should be called.
+
+Add this conditional to your function.
+
+```python
+def make_octave(x, y, z):
+    for i in range(0, 19, 3):
+        white_key(player_x + i, player_y, player_z)
+    for i in range(2, 18, 3):
+        if i != 8:  ##leave a space as only 5 black keys
+            black_key(player_x + i, player_y, player_z)
+```
+
+Save and run your code and then call the `make_octave` function. You should see a piano ocatve being produced.
+
+## Clearing some space
+
+Depending on where you are in the Minecraft world, you might find your piano being created in the middle of a mountain. To prevent this you can clear some space will a `bull_dozer` function, that will fill a cube around the player with air.
+
+```python
+def bull_dozer(x, y, z):
+    mc.setBlocks(x - 30, y - 3, z - 30, x + 30, y + 20, z + 30, 0)
+```
+	
+## Making the octave again.
+
+Let's tie all that together now. At the end of all you functions you have made, you can now call the functions in your code, and use three lines to set it all up. First bulldoze the area, then make the piano and then set the player's position.
+
+```python
+bull_dozer(player_x, player_y, player_z)
+make_octave(player_x, player_y, player_z)
+mc.player.setPos(player_x + 8, player_y + 3, player_z + 12)
+```
+
+Now when you save and run your code a Piano octave should appear beneath your feet. Each time you run the code, an new octave will be produced.
+
