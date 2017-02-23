@@ -34,7 +34,7 @@ The first step in this project is to try and send notes from Python to Sonic Pi.
 
 1. Open up a new Python3 file by clicking `Menu` > `Programming` > `Python 3 (IDLE)`, then clicking on `File` > `New File`
 
-1. You'll need the `python-osc` module for this project, so make sure you have installed it by following the instructions on the ![software](software.md) page.
+1. You'll need the `python-osc` module for this project, so make sure you have installed it by following the instructions on the ![software](https://www.raspberrypi.org/learning/the-big-minecraft-piano/requirements/software/) page.
 
 1. The first few lines you need just import the necessary methods from the module.
 
