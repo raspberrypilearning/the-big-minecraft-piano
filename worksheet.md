@@ -4,11 +4,13 @@ In this project, you're going to create a piano keyboard in Minecraft that can b
 
 This project uses Sonic Pi to play the music, Minecraft to visualise the piano and act as your input, and Python to build the piano and act as a way for Sonic Pi and Minecraft to communicate with each other.
 
+This project cover lots of Computer Science concepts, such as creating functions, using for loops and network communication.
+
 ## Receiving messages in Sonic Pi
 
-The first step in this project is to try and send notes from Python to Sonic Pi. This is possible because Sonic Pi has Open Sound Control server, that can listen out for messages sent by other pieces of software.
+The first step in this project is to try and send notes from Python to Sonic Pi. This is possible because Sonic Pi uses Open Sound Control (OSC). This is a way for sound synthesizers to communicate with each other over a network.
 
-1. The first thing to do is to tell Sonic Pi to listen out for messages. Load up Sonic Pi by clicking on `Menu` > `Programming` > `Sonic Pi`
+1. The first thing to do is to tell Sonic Pi to listen out for messages. Load up Sonic Pi by clicking on `Menu` > `Programming` > `Sonic Pi`, and then click into `Buffer 0` to start writing code.
 
 1. You just need a few lines of code in your Sonic Pi file, which are explained below.
 
@@ -41,7 +43,11 @@ The first step in this project is to try and send notes from Python to Sonic Pi.
 	from pythonosc import udp_client
 	```
 	
-1. Next you need to create an object that will send the message. OSC uses the UDP protocol. As you're communicating with Sonic Pi locally, you can use the *home* address of the Raspberry Pi, which is 127.0.0.1. Sonic Pi will be listening on port 4559.
+1. Next you need to create an object that will send the message. Open Sound Control uses a method of communicating called [UDP](https://simple.wikipedia.org/wiki/User_Datagram_Protocol) (User Datagram Protocol).  This is a method computers often use to talk to each other over the internet. You could use this to get two different Raspberry Pis to talk to each other, but your Python program and Sonic Pi script are both running on he same machine.
+
+	As both programs are on the same Raspberry Pi,, you can use the *home* address of the Raspberry Pi to tell Python where to send the message. A computer always gives itself the same IP address for programs to talk to each other, which is `127.0.0.1`.
+	
+	Messages sent using UDP, also need a port number. Port numbers are numbers included in messages that are sent, and let programs know that the message was meant for them. Sonic Pi is going to listen for messages using port number `4559`, so your Python program needs to use this port number in it's messages.
 
 	```python
 	sender = udp_client.SimpleUDPClient('127.0.0.1', 4559)
@@ -53,12 +59,12 @@ The first step in this project is to try and send notes from Python to Sonic Pi.
 	>>> sender.send_message('/play_this', 60)
 	```
 
-1. You should hear the note *60* being played, which is middle C
+1. You should hear the note *60* being played by Sonic Pi, which is middle C.
 
 1. You can now turn this into a function. Go back to your Python3 file and create a function that takes a single argument `note` and plays that note.
 
 	```python
-	def play_note():
+	def play_note(note):
 		'''Take an integer note value and send it to sonic pi'''
 		sender.send_message('/play_this', note)
 		sleep(0.5)
@@ -77,6 +83,8 @@ It may seem a little daunting to try and build a piano in Minecraft, so it's eas
 
 A piano keyboard is made up of repeating groups of 7 white keys and 5 black keys. This is called an octave. Building each of these elements one at a time, will allow you to easily build a keyboard.
 
+1. Start by creating a new Minecraft world. Click on `Menu` > `Games` `Minecraft`. Then click on `Start Game` and finally `Create New World`.
+
 1. To begin with, you need to import the Minecraft Pi module and get the player's current position.
 Add a few more lines of code so that the start of your file looks like this:
 
@@ -93,9 +101,26 @@ Add a few more lines of code so that the start of your file looks like this:
 	```
 
 ## Planning the keyboard
+
 It's always a good idea to quickly sketch out what you want to build before you start throwing blocks into the Minecraft world. Here's a quick sketch of an octave of a keyboard, showing the `x` and `z` block positions.
 
 ![octave sketch](images/octave.jpg)
+
+## Clearing some space
+
+1. Depending on where you are in the Minecraft world, you might find your piano would be created in the middle of a mountain. To prevent this you can clear some space will a `bulldozer` function, that will fill a cube around the player with air.
+
+	```python
+	def bulldozer(x, y, z):
+		mc.setBlocks(x - 30, y - 3, z - 30, x + 30, y + 20, z + 30, 0)
+	```
+1. You can test this out, by saving and running your code and then calling the function, with Steve's position, in the shell.
+
+    ```python
+	>>> bulldozer(player_x, player_y, player_z)
+	```
+
+1. You should see that the environment around Stave has been flattened.
 
 ## Building black keys
 
@@ -123,9 +148,10 @@ It's always a good idea to quickly sketch out what you want to build before you 
 1. Move Steve around and you should be able to see a black piano key in the Minecraft world.
 
 ## Building White keys
+
 1. Have a look at the first white key in the sketch. It's three blocks wide and 15 blocks long. This time you need to set blocks from `x` up to `x + 2` and from `z` up to `z + 14`.
 
-	You can write a function to do this, using the white tile block, which has a blockId of `44, 7`
+	You can write a function to do this, using the white tile block, which has a blockId of `44, 7`. The `44` is the tile block, and the `7` tells Minecraft that it should be white.
 
 	```python
 	def white_key(x, y, z):
@@ -138,11 +164,11 @@ It's always a good idea to quickly sketch out what you want to build before you 
 	>>> white_key(player_x, player_y, player_z)
 	```
 
-## Making an octave.
+## Investigating `for` loops
 
-On octave consists of 7 white notes and 5 black notes. If you look at the sketch, you can see that the blocks stretch from `x` to `x + 18`. The `for` loop needs to place a key every 3 block-units on the `x` axis from `0` up to `18`.
+For the next section, you're going to need to use a `for` loop to place multiple keys. You can experiment with `for` loops if you are unsure of how they work, by clicking on `File` > `New File` and writing some test code in a new blank file.
 
-1. You can write a quick `for` loop in a new file or the shell, to learn a little about how they function. This loop will make sure each value is printed with commas separating the numbers.
+1. You can write a simple `for` loop in your new file. This loop will make sure each value is printed with commas separating the numbers.
 
 	```python
 	for i in range(19):
@@ -153,7 +179,7 @@ On octave consists of 7 white notes and 5 black notes. If you look at the sketch
 
 1. You can see that the first value is `0` and the last is `20`.
 
-	If you want to place a block every 3 units, then you need to add a step value to the `range()` function.
+	If you wanted to get every third number, then you need to add a step value to the `range()` function.
 	Here the function provides values from `0` to `20` with a step value of `3`.
 	
 	```python
@@ -162,6 +188,10 @@ On octave consists of 7 white notes and 5 black notes. If you look at the sketch
 
 	>>> 0,3,6,9,12,15,18,
 	```
+	
+## Making an octave.
+
+On octave consists of 7 white notes and 5 black notes. If you look at the sketch, you can see that the blocks stretch from `x` to `x + 18`. The `for` loop needs to place a white key every 3 block-units on the `x` axis from `0` up to `18`.
 
 1. Now you can start making your octave function. placing a white key at every position provided by `i`.
 
@@ -199,40 +229,31 @@ On octave consists of 7 white notes and 5 black notes. If you look at the sketch
 	```
 
 1. Save and run your code and then call the `make_octave` function. You should see a piano octave being produced.
-
-## Clearing some space
-
-1. Depending on where you are in the Minecraft world, you might find your piano being created in the middle of a mountain. To prevent this you can clear some space will a `bull_dozer` function, that will fill a cube around the player with air.
-
-	```python
-	def bull_dozer(x, y, z):
-		mc.setBlocks(x - 30, y - 3, z - 30, x + 30, y + 20, z + 30, 0)
-	```
 	
 ## Making the octave again.
 
-1. Let's tie all that together now. At the end of all you functions you have made, you can now call the functions in your code, and use three lines to set it all up. First bulldoze the area, then make the piano and then set the player's position.
+1. Let's tie all that together now. At the end of all you functions you have made, you can now call the functions in your code, and use three lines to set it all up. First bulldoze the area, then make the piano and then on the last line set the player's position, so that Steve moves to the middle of the piano.
 
 	```python
-	bull_dozer(player_x, player_y, player_z)
+	bulldozer(player_x, player_y, player_z)
 	make_octave(player_x, player_y, player_z)
 	mc.player.setPos(player_x + 8, player_y + 3, player_z + 12)
 	```
 
 1. Now when you save and run your code a Piano octave should appear beneath your feet. Each time you run the code, a new octave will be produced.
 
-## Making the Piano sing
+## Playing your Piano.
 
 The next step is to have the piano play a note when Steve walks over a key.
 
-1. To begin you'll need an infinite loop, that will constantly get Steve's latest position.
+1. To begin you'll need an infinite loop, that will constantly get Steve's latest position. All your code from now on, needs to be placed **inside** this `while True` loop.
 
 	```python
 	while True:
 		new_x, new_y, new_z = mc.player.getTilePos()
 	```
 
-1. Next you need to find the block below Steve's feet. The problem is that the white keys are only half a block in height. If Steve is standing on a white tile, then the block below his feet will be whatever block is below the piano. You can handle this with a conditional, and check if the block below is not a white or black key.
+1. Next you need to find the block below Steve's feet. The problem is that the white keys are only half a block in height. If Steve is standing on a white tile, because of their smaller height, `block_below` ends up being the air that is beneath the piano. You can handle this with a conditional, and check if the block below is not a white or black key.
 
 	```python
 		block_below = mc.getBlock(new_x, new_y - 1, new_z)
@@ -246,7 +267,7 @@ The next step is to have the piano play a note when Steve walks over a key.
 		relative_position = player_x - new_x ## find the position on the piano
 	```
 
-1. Now you can make a list of the notes to be played. Starting from Middle C, the white notes have midi values of 60, 62, 64, 65, 67, 68 and 71. The black notes are the midi values in between the white notes.
+1. Now you can make a list of the notes to be played. Starting from Middle C, the white notes have midi values of 60, 62, 64, 65, 67, 68 and 71. The black notes are the midi values in between the white notes. You can place a 0 into the `black_notes` as there are only
 
 	```python
 		white_notes = [60, 62, 64, 65, 67, 69, 71]
@@ -277,3 +298,5 @@ The next step is to have the piano play a note when Steve walks over a key.
 - Alter your Sonic Pi script, so that it uses different synths. You can find more at [Getting Started with Sonic Pi]()
 
 - Add a few LEDs into a breadboard, and you can make them light up when the keys are pressed. Or maybe the piano keys could change colour when they are stepped on.
+
+- It's a little difficult to differentiate between the white keys at the moment. Could they be redrawn as a different coloured tile, each time they are played?
