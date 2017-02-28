@@ -266,7 +266,7 @@ The next step is to have the piano play a note when Steve walks over a key.
 		relative_position = player_x - new_x ## find the position on the piano
 	```
 
-1. Now you can make a list of the notes to be played. Starting from middle C, the white notes have MIDI values of 60, 62, 64, 65, 67, 68, and 71. The black notes are the MIDI values in between the white notes. You can place a 0 into the `black_notes` as there are only
+1. Now you can make a list of the notes to be played. Starting from middle C, the white notes have MIDI values of 60, 62, 64, 65, 67, 68, and 71. The black notes are the MIDI values in between the white notes. You can place a 0 into the `black_notes` as there are only 5 of them on the keyboard.
 
 	```python
 		white_notes = [60, 62, 64, 65, 67, 69, 71]
