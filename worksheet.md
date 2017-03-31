@@ -46,9 +46,9 @@ The first step in this project is to try and send notes from Python to Sonic Pi.
 	
 1. Next, you need to create an object that will send the message. Open Sound Control uses a method of communicating called [UDP](https://simple.wikipedia.org/wiki/User_Datagram_Protocol) (User Datagram Protocol). This is a method computers often use to talk to each other over the internet. You could use this to get two different Raspberry Pis to talk to each other, but your Python program and Sonic Pi script are both running on the same machine.
 
-As both programs are on the same Raspberry Pi, you can use the *home* address of the Raspberry Pi to tell Python where to send the message. A computer always gives itself the same IP address for programs to talk to each other, which is `127.0.0.1`.
-	
-Messages sent using UDP also need to include a port number. Port numbers let programs know that the message was meant for them. Sonic Pi is going to listen for messages using port number `4559`, so your Python program needs to use this port number in its messages.
+	As both programs are on the same Raspberry Pi, you can use the *home* address of the Raspberry Pi to tell Python where to send the message. A computer always gives itself the same IP address for programs to talk to each other, which is `127.0.0.1`.
+
+	Messages sent using UDP also need to include a port number. Port numbers let programs know that the message was meant for them. Sonic Pi is going to listen for messages using port number `4559`, so your Python program needs to use this port number in its messages.
 
 	```python
 	sender = udp_client.SimpleUDPClient('127.0.0.1', 4559)
