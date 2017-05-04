@@ -22,7 +22,7 @@ The first step in this project is to try and send notes from Python to Sonic Pi.
 	  play note
 	end
 	```
-	
+
 	1. `set_sched_ahead_time! 0` tells Sonic Pi to keep listening without any delay, so the notes are played quickly.
 	1. `live_loop :listen do` starts a *live loop* that will run forever. Live loops need their own unique names, so this one has been called `listen`.
 	1. `message = sync "/play_this"` creates a variable when the message `/play_this` is heard by Sonic Pi. The `message` will be a dictionary.
@@ -43,7 +43,7 @@ The first step in this project is to try and send notes from Python to Sonic Pi.
 	from pythonosc import osc_message_builder
 	from pythonosc import udp_client
 	```
-	
+
 1. Next, you need to create an object that will send the message. Open Sound Control uses a method of communicating called [UDP](https://simple.wikipedia.org/wiki/User_Datagram_Protocol) (User Datagram Protocol). This is a method computers often use to talk to each other over the internet. You could use this to get two different Raspberry Pis to talk to each other, but your Python program and Sonic Pi script are both running on the same machine.
 
 	As both programs are on the same Raspberry Pi, you can use the *home* address of the Raspberry Pi to tell Python where to send the message. A computer always gives itself the same IP address for programs to talk to each other, which is `127.0.0.1`.
@@ -70,7 +70,7 @@ The first step in this project is to try and send notes from Python to Sonic Pi.
 		sender.send_message('/play_this', note)
 		sleep(0.5)
 	```
-	
+
 1. If you save and run your code, you can then test out your function in the shell. For instance, each of these lines should play a note.
 
 ```python
@@ -115,10 +115,10 @@ It's always a good idea to quickly sketch out what you want to build before you 
 	def bulldozer(x, y, z):
 		mc.setBlocks(x - 30, y - 3, z - 30, x + 30, y + 20, z + 30, 0)
 	```
-	
+
 1. You can test this out by saving and running your code and then calling the function, with Steve's position, in the shell.
 
-    ```python
+	```python
 	>>> bulldozer(player_x, player_y, player_z)
 	```
 
@@ -134,7 +134,7 @@ It's always a good idea to quickly sketch out what you want to build before you 
 
 1. The next step is to use the `setBlocks` function, to set a few black Minecraft blocks. If you look at the black key on the far left, you can see that it's 2 blocks wide and 9 blocks long. So if the first block is placed at an `x` and `z` coordinate, then you need the one to its right to be placed at `x + 1`, and the ones below it to be placed at `z + 1` up to `z + 8`. All the blocks can be placed at 1 block below the player's position - `y - 1`.
 
-Obsidian seems like a sensible material to build the blocks from. This has a `blockId` of `49`.
+	Obsidian seems like a sensible material to build the blocks from. This has a `blockId` of `49`.
 
 	```python
 	def black_key(x, y, z):
@@ -153,7 +153,7 @@ Obsidian seems like a sensible material to build the blocks from. This has a `bl
 
 1. Have a look at the first white key in the sketch. It's three blocks wide and 15 blocks long. This time, you need to set blocks from `x` up to `x + 2`, and from `z` up to `z + 14`.
 
-You can write a function to do this using the white tile block, which has a `blockId` of `44, 7`. The `44` is the tile block, and the `7` tells Minecraft that it should be white.
+	You can write a function to do this using the white tile block, which has a `blockId` of `44, 7`. The `44` is the tile block, and the `7` tells Minecraft that it should be white.
 
 	```python
 	def white_key(x, y, z):
@@ -181,15 +181,15 @@ For the next section, you're going to need to use a `for` loop to place multiple
 
 1. You can see that the first value is `0` and the last is `20`.
 
-If you wanted to get every third number, then you need to add a step value to the `range()` function. Here, the function provides values from `0` to `20` with a step value of `3`.
-	
+	If you wanted to get every third number, then you need to add a step value to the `range()` function. Here, the function provides values from `0` to `20` with a step value of `3`.
+
 	```python
 	for i in range(0, 19, 3):
 		print(i, end = ',')
 
 	>>> 0,3,6,9,12,15,18,
 	```
-	
+
 ## Making an octave
 
 One octave consists of 7 white notes and 5 black notes. If you look at the sketch, you can see that the blocks stretch from `x` to `x + 18`. The `for` loop needs to place a white key every 3 block-units on the `x` axis from `0` up to `18`.
@@ -223,12 +223,12 @@ One octave consists of 7 white notes and 5 black notes. If you look at the sketc
 		for i in range(0, 19, 3):
 			white_key(player_x + i, player_y, player_z)
 		for i in range(2, 18, 3):
-			if i != 8:  ## leave a space as only 5 black keys
+			if i != 8:	## leave a space as only 5 black keys
 				black_key(player_x + i, player_y, player_z)
 	```
 
 1. Save and run your code, and then call the `make_octave` function. You should see a piano octave being produced.
-	
+
 ## Making the octave again
 
 1. Let's tie all that together now. At the end of all the functions you've made, you can now call the functions in your code, and use three lines to set it all up. First bulldoze the area, then make the piano, and then on the last line set the player's position, so that Steve moves to the middle of the piano.
@@ -285,7 +285,7 @@ The next step is to have the piano play a note when Steve walks over a key.
 
 	```python
 		if block_below == 49:
-			notes_along = ((relative_position - 1) // -3) - 1 
+			notes_along = ((relative_position - 1) // -3) - 1
 			play_note(black_notes[notes_along])
 	```
 
@@ -295,7 +295,7 @@ The next step is to have the piano play a note when Steve walks over a key.
 
 - You could try and increase the size of your piano, by calling the `make_octave` function in a `for` loop. You'll also need to add more values to your `black_notes` and `white_notes`.
 
-- Alter your Sonic Pi script, so that it uses different synths. You can find more at [Getting Started with Sonic Pi]().
+- Alter your Sonic Pi script, so that it uses different synths. You can find more at [Getting Started with Sonic Pi](https://www.raspberrypi.org/learning/getting-started-with-sonic-pi/).
 
 - Add a few LEDs into a breadboard, and you can make them light up when the keys are pressed. Or maybe the piano keys could change colour when they are stepped on.
 
