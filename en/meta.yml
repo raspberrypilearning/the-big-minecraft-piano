@@ -3,17 +3,17 @@ title: The big Minecraft piano
 hero_image: images/banner.png
 description: Make a piano in Minecraft that plays notes when you step on it.
 original_url: https://raspberrypi.org/learning/the-big-minecraft-piano
-theme: red
+theme: orange
 duration: 2
 listed: true
 ingredient: false
 copyedit: true
 curriculum: 2, design-1, programming-2, phys-comp-0, manufacture-0, community-0
 interests: games, music
-technologies: raspberry-pi, electronic-components, python
+technologies: raspberry-pi, python, sonic-pi
 site_areas: projects
-hardware: raspberry-pi, electronic-components
-software: python
+hardware: raspberry-pi
+software: python, sonic-pi
 version: 3
 last_tested: 2017-01-01
 steps: 
