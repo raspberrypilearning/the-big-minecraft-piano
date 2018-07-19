@@ -9,6 +9,7 @@
 	```python
 	from pythonosc import osc_message_builder
 	from pythonosc import udp_client
+	from time import sleep
 	```
 
 - Next, you need to create an object that will send the message. Open Sound Control uses a method of communicating called [UDP](https://simple.wikipedia.org/wiki/User_Datagram_Protocol) (User Datagram Protocol). This is a method computers often use to talk to each other over the internet. You could use this to get two different Raspberry Pis to talk to each other, but your Python program and Sonic Pi script are both running on the same machine.
