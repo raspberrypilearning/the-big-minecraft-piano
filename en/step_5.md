@@ -16,10 +16,10 @@
 
 	As both programs are on the same Raspberry Pi, you can use the *home* address of the Raspberry Pi to tell Python where to send the message. A computer always gives itself the same IP address for programs to talk to each other, which is `127.0.0.1`.
 
-	Messages sent using UDP also need to include a port number. Port numbers let programs know that the message was meant for them. Sonic Pi is going to listen for messages using port number `4559`, so your Python program needs to use this port number in its messages.
+	Messages sent using UDP also need to include a port number. Port numbers let programs know that the message was meant for them. Sonic Pi is going to listen for messages using port number `4560`, so your Python program needs to use this port number in its messages.
 
 	```python
-	sender = udp_client.SimpleUDPClient('127.0.0.1', 4559)
+	sender = udp_client.SimpleUDPClient('127.0.0.1', 4560)
 	```
 
 - Save and run your code (`Ctrl`+`S` and then `F5`). Nothing will happen yet, but you can test out the connection in the shell. Switch over to the shell and type the following:
