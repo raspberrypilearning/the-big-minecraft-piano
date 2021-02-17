@@ -9,14 +9,14 @@ The first step in this project is to try and send notes from Python to Sonic Pi.
 	```ruby
 	live_loop :listen do
 	    use_real_time
-	    note = sync "/osc/play_this"
+	    note = sync "/osc*/play_this"
 	    play note[0]
 	end
 	```
 
 	1. `live_loop :listen do` starts a *live loop* that will run forever. Live loops need their own unique names, so this one has been called `listen`.
 	1. `use_real_time` ensures that Sonic Pi will play the note as soon as the message is received.
-	1. `note = sync "/osc/play_this"` creates a variable when the message `/osc/play_this` is heard by Sonic Pi. The `message` will be a list.
+	1. `note = sync "/osc*/play_this"` creates a variable when the message `/osc*/play_this` is heard by Sonic Pi. The `message` will be a list.
 	1. `play note[0]` will play the MIDI value that was sent.
 
 - You can now run this script. Nothing will happen yet, because Sonic Pi is not receiving any messages.
