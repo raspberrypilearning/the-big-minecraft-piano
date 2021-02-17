@@ -14,7 +14,7 @@ A piano keyboard is made up of repeating groups of 7 white keys and 5 black keys
 	from mcpi.minecraft import Minecraft
 	from time import sleep
 
-	sender = udp_client.SimpleUDPClient('127.0.0.1', 4559)
+	sender = udp_client.SimpleUDPClient('127.0.0.1', 4560)
 	mc = Minecraft.create()
 
 	player_x, player_y, player_z  = mc.player.getTilePos()
