@@ -16,9 +16,10 @@ hardware: raspberry-pi
 software: python, sonic-pi
 version: 3.1.0
 last_tested: 2017-01-01
-steps: 
+steps:
 - title: Introduction
 - title: What you will need
+  completion: engaged
 - title: The big minecraft piano
 - title: Receiving messages in Sonic Pi
 - title: Sending messages to Sonic Pi
@@ -30,5 +31,6 @@ steps:
 - title: Investigating `for` loops
 - title: Making an octave
 - title: Making the octave again
+  completion: internal
 - title: Playing your piano
 - title: What next?
